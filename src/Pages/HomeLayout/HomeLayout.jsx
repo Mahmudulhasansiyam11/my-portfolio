@@ -1,12 +1,36 @@
+// import React from "react";
+// import Navbar from "../../Components/NavBar/NavBar";
+// import Home from "../../Components/Home/Home";
+// import About from "../../Components/About/About";
+
+// const HomeLayout = () => {
+//   return (
+//     <div>
+//       <Navbar></Navbar>
+//      <Home></Home>
+//      <About></About>
+//     </div>
+//   );
+// };
+
+// export default HomeLayout;
+
 import React from "react";
 import Navbar from "../../Components/NavBar/NavBar";
 import Home from "../../Components/Home/Home";
+import About from "../../Components/About/About";
+import ScrollToNextSection from "../../Components/ScrollToNextSection/ScrollToNextSection";
+// import ScrollToNextSection from "../../Components/ScrollToNextSection";
 
 const HomeLayout = () => {
   return (
     <div>
-      <Navbar></Navbar>
-     <Home></Home>
+      <Navbar />
+      <Home />
+      <ScrollToNextSection targetSection="about" /> {/* Scroll to the About section */}
+      <About />
+      <ScrollToNextSection targetSection="skills" /> {/* Scroll to the Skills section */}
+      {/* Add more ScrollToNextSection components for other sections */}
     </div>
   );
 };

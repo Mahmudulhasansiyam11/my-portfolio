@@ -8,3 +8,13 @@ html {
 body {
   font-family: "Inter", "Poppins", sans-serif;
 }
+
+.about-card {
+  @apply bg-gray-900/60 dark:bg-gray-800/60 
+         p-5 rounded-xl border 
+         border-cyan-300/30 
+         shadow-[0_0_25px_rgba(0,255,255,0.25)]
+         flex flex-col items-center justify-center
+         backdrop-blur-xl
+         transition transform hover:-translate-y-1 hover:scale-[1.03];
+}

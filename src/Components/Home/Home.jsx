@@ -1,10 +1,12 @@
-
-
 import React from "react";
 
 const Home = () => {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#f8fafc] via-[#eef2ff] to-[#e0f2fe] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 font-display text-gray-800 dark:text-gray-200 px-6 sm:px-10 md:px-16 py-8 md:py-14">
+    <div
+      id="home" // Add an id for the section
+      className="min-h-screen w-full bg-gradient-to-br from-[#f8fafc] via-[#eef2ff] to-[#e0f2fe] dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 font-display text-gray-800 dark:text-gray-200 px-6 sm:px-10 md:px-16 py-8 md:py-14"
+    >
+      {/* Section Content */}
       {/* --- NAV HEADER --- */}
       <header className="flex justify-between items-center mb-10 md:mb-16 w-full">
         {/* Logo */}
