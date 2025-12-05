@@ -1,9 +1,71 @@
 
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaUserTie, FaCheckCircle, FaHeadset, FaDownload } from "react-icons/fa";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const About = () => {
+  const imageRef = useRef(null);
+  const card1Ref = useRef(null);
+  const card2Ref = useRef(null);
+  const card3Ref = useRef(null);
+
+  useEffect(() => {
+    // Set initial state for image
+    gsap.set(imageRef.current, { scale: 0.5, rotation: -15, opacity: 0 });
+
+    // GSAP ScrollTrigger animation for image
+    gsap.to(imageRef.current, {
+      scrollTrigger: {
+        trigger: imageRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+      scale: 1,
+      rotation: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "back.out(1.7)",
+    });
+
+    // Set initial state for cards
+    gsap.set([card1Ref.current, card2Ref.current, card3Ref.current], {
+      y: 50,
+      opacity: 0,
+    });
+
+    // GSAP animation for cards with stagger
+    gsap.to([card1Ref.current, card2Ref.current, card3Ref.current], {
+      scrollTrigger: {
+        trigger: card1Ref.current,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power3.out",
+    });
+
+    // Hover effect for cards
+    [card1Ref, card2Ref, card3Ref].forEach((ref) => {
+      const card = ref.current;
+      if (card) {
+        card.addEventListener("mouseenter", () => {
+          gsap.to(card, { y: -10, duration: 0.3, ease: "power2.out" });
+        });
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, { y: 0, duration: 0.3, ease: "power2.out" });
+        });
+      }
+    });
+  }, []);
+
   return (
     <div
       id="about"
@@ -14,22 +76,31 @@ const About = () => {
     >
 
       {/* Header */}
-      <header className="text-center mb-10">
+      <motion.header
+        className="text-center mb-10"
+        initial={{ opacity: 0, y: -50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
           About Me
         </h1>
         <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
           My Introduction
         </p>
-      </header>
+      </motion.header>
 
       {/* Content Wrapper */}
       <main className="w-full max-w-5xl flex flex-col lg:flex-row items-center gap-10">
 
         {/* Left: Image */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <div className="rounded-xl overflow-hidden p-2 bg-white/20 dark:bg-gray-800/20 
-          backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.15)] border border-white/40 dark:border-gray-700/40">
+          <div
+            ref={imageRef}
+            className="rounded-xl overflow-hidden p-2 bg-white/20 dark:bg-gray-800/20 
+          backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.15)] border border-white/40 dark:border-gray-700/40"
+          >
             <img
               alt="Laptop coding illustration"
               className="w-full max-w-xs rounded-lg shadow-md"
@@ -53,47 +124,79 @@ const About = () => {
               mb-8
             "
           >
-            <div className="about-card scale-90">
-              <FaUserTie className="text-3xl text-cyan-300 drop-shadow-[0_0_6px_cyan]" />
+            <div ref={card1Ref} className="about-card scale-90">
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+              >
+                <FaUserTie className="text-3xl text-cyan-300 drop-shadow-[0_0_6px_cyan]" />
+              </motion.div>
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white mt-1">Experience</h2>
               <p className="text-[10px] text-gray-900 dark:text-gray-400">1 Year</p>
             </div>
 
-            <div className="about-card scale-90">
-              <FaCheckCircle className="text-3xl text-cyan-300 drop-shadow-[0_0_6px_cyan]" />
+            <div ref={card2Ref} className="about-card scale-90">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+              >
+                <FaCheckCircle className="text-3xl text-cyan-300 drop-shadow-[0_0_6px_cyan]" />
+              </motion.div>
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white mt-1">Completed</h2>
               <p className="text-[10px] text-gray-900 dark:text-gray-400">3 Projects</p>
             </div>
 
-            <div className="about-card scale-90">
-              <FaHeadset className="text-3xl text-cyan-300 drop-shadow-[0_0_6px_cyan]" />
+            <div ref={card3Ref} className="about-card scale-90">
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+              >
+                <FaHeadset className="text-3xl text-cyan-300 drop-shadow-[0_0_6px_cyan]" />
+              </motion.div>
               <h2 className="text-sm font-semibold text-gray-900 dark:text-white mt-1">Support</h2>
               <p className="text-[10px] text-gray-900 dark:text-gray-400">Available Online</p>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-base leading-relaxed text-center lg:text-left text-gray-700 dark:text-gray-300 mb-8">
+          <motion.p
+            className="text-base leading-relaxed text-center lg:text-left text-gray-700 dark:text-gray-300 mb-8"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
             I’m a passionate and detail-oriented Frontend Developer skilled in building modern,
             responsive, and interactive web applications. I work with{" "}
             <span className="font-bold">
               HTML, CSS, JavaScript, ReactJS, Next.js, TailwindCSS, Firebase, NodeJS, ExpressJS, and MongoDB.
             </span>{" "}
             I enjoy solving real-world problems through clean UI/UX and efficient code.
-          </p>
+          </motion.p>
 
           {/* Resume Button */}
-          <a
+          <motion.a
             href="/resume.pdf"
             download="Mahmudul-Hasan-Resume.pdf"
             className="w-full max-w-xs bg-gradient-to-r from-indigo-600 to-purple-600 
             dark:from-indigo-700 dark:to-purple-700 text-white py-3 px-5 
             rounded-xl shadow-lg font-semibold flex items-center
             justify-center gap-2 hover:scale-105 transition text-sm"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <FaDownload />
+            <motion.div
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 1, repeat: Infinity }}
+            >
+              <FaDownload />
+            </motion.div>
             <span>Download Resume</span>
-          </a>
+          </motion.a>
 
         </div>
       </main>

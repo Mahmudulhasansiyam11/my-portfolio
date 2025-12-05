@@ -1,6 +1,74 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
 
 const Home = () => {
+  const imageRef = useRef(null);
+  const badge1Ref = useRef(null);
+  const badge2Ref = useRef(null);
+  const badge3Ref = useRef(null);
+
+  useEffect(() => {
+    // GSAP animations for image and badges
+    const tl = gsap.timeline();
+
+    // Set initial state for image
+    gsap.set(imageRef.current, { scale: 0, rotation: -180 });
+
+    // Animate image with scale and rotation
+    tl.to(imageRef.current, {
+      scale: 1,
+      rotation: 0,
+      duration: 1.2,
+      ease: "elastic.out(1, 0.5)",
+    });
+
+    // Set initial state for badges
+    gsap.set([badge1Ref.current, badge2Ref.current, badge3Ref.current], {
+      scale: 0,
+      opacity: 0,
+    });
+
+    // Animate badges with stagger
+    tl.to(
+      [badge1Ref.current, badge2Ref.current, badge3Ref.current],
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "back.out(1.7)",
+      },
+      "-=0.5"
+    );
+
+    // Floating animation for badges
+    gsap.to(badge1Ref.current, {
+      y: -10,
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+
+    gsap.to(badge2Ref.current, {
+      y: -15,
+      duration: 2.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: 0.5,
+    });
+
+    gsap.to(badge3Ref.current, {
+      y: -12,
+      duration: 2.2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: 1,
+    });
+  }, []);
   return (
     <div
       id="home" // Add an id for the section
@@ -44,6 +112,7 @@ const Home = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-400 dark:from-gray-700 dark:to-gray-900 rounded-full shadow-2xl blur-[1px]"></div>
 
           <img
+            ref={imageRef}
             alt="Image of Mahmudul Hasan Siyam"
             className="absolute inset-2 object-cover w-[calc(100%-1rem)] h-[calc(100%-1rem)] rounded-full border-4 border-white dark:border-gray-900 shadow-xl"
             src="https://i.ibb.co.com/TBmJXqx4/siyam.png"
@@ -51,6 +120,7 @@ const Home = () => {
 
           {/* Badge 1 */}
           <div
+            ref={badge1Ref}
             className="absolute -top-2 right-0 transform translate-x-1/4 -translate-y-1/4 flex items-center gap-2 p-4 rounded-xl
           bg-gray-900/70 border border-cyan-400/30 shadow-[0_0_20px_rgba(0,255,255,0.3)]"
           >
@@ -65,7 +135,10 @@ const Home = () => {
           </div>
 
           {/* Badge 2 */}
-          <div className="absolute top-1/2 -left-4 transform -translate-y-1/2 flex items-center gap-2 p-4 rounded-xl bg-gray-900/70 border border-cyan-400/30 shadow-[0_0_20px_rgba(0,255,255,0.3)]">
+          <div
+            ref={badge2Ref}
+            className="absolute top-1/2 -left-4 transform -translate-y-1/2 flex items-center gap-2 p-4 rounded-xl bg-gray-900/70 border border-cyan-400/30 shadow-[0_0_20px_rgba(0,255,255,0.3)]"
+          >
             <div>
               <p className="text-2xl font-bold text-cyan-300 drop-shadow-[0_0_8px_cyan]">
                 1
@@ -78,8 +151,8 @@ const Home = () => {
           </div>
 
           {/* Badge 3 */}
-
           <div
+            ref={badge3Ref}
             className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/3
   flex items-center gap-3 p-4 rounded-xl
   bg-gray-900/70 border border-cyan-400/30 shadow-[0_0_20px_rgba(0,255,255,0.3)]"
@@ -96,70 +169,140 @@ const Home = () => {
         </div>
 
         {/* --- RIGHT SIDE: TEXT CONTENT --- */}
-        <div className="text-center md:text-left max-w-xl">
-          <p className="text-lg text-gray-600 dark:text-gray-400">Hey, I'm</p>
+        <motion.div
+          className="text-center md:text-left max-w-xl"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <motion.p
+            className="text-lg text-gray-600 dark:text-gray-400"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            Hey, I'm
+          </motion.p>
 
-          <div className="flex items-center justify-center md:justify-start gap-2 mt-1">
+          <motion.div
+            className="flex items-center justify-center md:justify-start gap-2 mt-1"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.6, type: "spring" }}
+          >
             <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white">
               Mahmudul Hasan Siyam
             </h1>
-            <span className="text-4xl animate-wave">👋</span>
-          </div>
+            <motion.span
+              className="text-4xl"
+              animate={{ rotate: [0, 14, -8, 14, -4, 10, 0] }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 1,
+              }}
+            >
+              👋
+            </motion.span>
+          </motion.div>
 
-          <h2 className="text-2xl mt-3 text-gray-700 dark:text-gray-300 font-semibold">
+          <motion.h2
+            className="text-2xl mt-3 text-gray-700 dark:text-gray-300 font-semibold"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+          >
             Junior Frontend Developer
-          </h2>
+          </motion.h2>
 
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+          <motion.p
+            className="text-sm text-gray-600 dark:text-gray-400 mt-4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+          >
             🚀 Motivated Frontend Developer building responsive, user-friendly
             web applications
-          </p>
+          </motion.p>
 
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-8">
+          <motion.p
+            className="text-sm text-gray-600 dark:text-gray-400 mb-8"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.1, duration: 0.6 }}
+          >
             💼 Seeking impactful projects & collaboration opportunities to grow
             professionally
-          </p>
-          <a
+          </motion.p>
+
+          <motion.a
             href="#"
             className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-full shadow-xl hover:opacity-90 transition-all"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.3, duration: 0.6 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Say Hello
-            <svg
+            <motion.svg
               className="h-5 w-5"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               viewBox="0 0 24 24"
+              animate={{ rotate: [0, 15, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
             >
               <path
                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               ></path>
-            </svg>
-          </a>
+            </motion.svg>
+          </motion.a>
 
           {/* Social Icons */}
-          <div className="flex gap-6 mt-10 text-gray-500 dark:text-gray-400 justify-center md:justify-start">
-            <a className="hover:text-indigo-600 dark:hover:text-white" href="#">
+          <motion.div
+            className="flex gap-6 mt-10 text-gray-500 dark:text-gray-400 justify-center md:justify-start"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 0.6 }}
+          >
+            <motion.a
+              className="hover:text-indigo-600 dark:hover:text-white"
+              href="#"
+              whileHover={{ scale: 1.2, rotate: 5 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <svg className="icon-social" viewBox="0 0 24 24">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037..." />
               </svg>
-            </a>
+            </motion.a>
 
-            <a className="hover:text-indigo-600 dark:hover:text-white" href="#">
+            <motion.a
+              className="hover:text-indigo-600 dark:hover:text-white"
+              href="#"
+              whileHover={{ scale: 1.2, rotate: -5 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <svg className="icon-social" viewBox="0 0 24 24">
                 <path d="M23.953 4.57a10 10 0..." />
               </svg>
-            </a>
+            </motion.a>
 
-            <a className="hover:text-indigo-600 dark:hover:text-white" href="#">
+            <motion.a
+              className="hover:text-indigo-600 dark:hover:text-white"
+              href="#"
+              whileHover={{ scale: 1.2, rotate: 5 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <svg className="icon-social" viewBox="0 0 24 24">
                 <path d="M12 .297c-6.63 0..." />
               </svg>
-            </a>
-          </div>
-        </div>
+            </motion.a>
+          </motion.div>
+        </motion.div>
       </main>
     </div>
   );

@@ -1,9 +1,50 @@
 
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Skills = () => {
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+    // Set initial state for cards
+    gsap.set(cardsRef.current, { scale: 0.8, opacity: 0, y: 50 });
+
+    // GSAP ScrollTrigger animation for skill cards
+    gsap.to(cardsRef.current, {
+      scrollTrigger: {
+        trigger: cardsRef.current[0],
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+      scale: 1,
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.15,
+      ease: "back.out(1.7)",
+    });
+
+    // Floating animation for cards
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        gsap.to(card, {
+          y: -8,
+          duration: 2 + index * 0.3,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: index * 0.2,
+        });
+      }
+    });
+  }, []);
+
   const skillGroups = [
     {
       title: "Frontend Developer",
@@ -48,12 +89,24 @@ const Skills = () => {
       "
     >
       {/* Title */}
-      <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
+      <motion.h1
+        className="text-3xl font-extrabold text-gray-900 dark:text-white"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         Skills
-      </h1>
-      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+      </motion.h1>
+      <motion.p
+        className="text-xs text-gray-600 dark:text-gray-400 mt-1"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
         My Technical Level
-      </p>
+      </motion.p>
 
       {/* Card Wrapper */}
       <div
@@ -64,8 +117,9 @@ const Skills = () => {
         "
       >
         {skillGroups.map((group, index) => (
-          <div
+          <motion.div
             key={index}
+            ref={(el) => (cardsRef.current[index] = el)}
             className="
               p-6 rounded-2xl
               bg-white/40 dark:bg-gray-800/40 
@@ -74,17 +128,41 @@ const Skills = () => {
               shadow-[0_0_18px_rgba(0,0,0,0.15)]
               hover:shadow-[0_0_22px_rgba(0,255,255,0.35)]
               transition-all duration-300
-              scroll-fade
             "
+            whileHover={{ scale: 1.05, rotate: 1 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <h2 className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100 text-center">
+            <motion.h2
+              className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100 text-center"
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+            >
               {group.title}
-            </h2>
+            </motion.h2>
 
             <div className="flex flex-col gap-3">
               {group.skills.map((skill, i) => (
-                <div key={i} className="flex items-start gap-2">
-                  <AiOutlineCheckCircle className="text-lg text-cyan-400 drop-shadow-[0_0_6px_cyan]" />
+                <motion.div
+                  key={i}
+                  className="flex items-start gap-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 + i * 0.05 + 0.4 }}
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear",
+                      delay: i * 0.2,
+                    }}
+                  >
+                    <AiOutlineCheckCircle className="text-lg text-cyan-400 drop-shadow-[0_0_6px_cyan]" />
+                  </motion.div>
                   <div>
                     <p className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-tight">
                       {skill.name}
@@ -93,27 +171,12 @@ const Skills = () => {
                       {skill.level}
                     </p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-
-      {/* Scroll Animation */}
-      <style>{`
-        .scroll-fade {
-          opacity: 0;
-          transform: translateY(12px);
-          animation: fadeUp 0.9s ease forwards;
-        }
-        @keyframes fadeUp {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </section>
   );
 };

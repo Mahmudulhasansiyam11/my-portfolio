@@ -67,7 +67,10 @@
 
 // export default Technologies;
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   SiJavascript,
   SiReact,
@@ -77,7 +80,44 @@ import {
   SiFirebase,
 } from "react-icons/si";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Technologies = () => {
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+    // Set initial state for cards
+    gsap.set(cardsRef.current, { scale: 0, opacity: 0 });
+
+    // GSAP ScrollTrigger animation for tech cards
+    gsap.to(cardsRef.current, {
+      scrollTrigger: {
+        trigger: cardsRef.current[0],
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+      scale: 1,
+      opacity: 1,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: "back.out(1.7)",
+    });
+
+    // Floating animation for each card
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        gsap.to(card, {
+          y: -15,
+          duration: 1 + index * 0.1,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          delay: index * 0.05 + 0.6, // Add delay after entrance animation
+        });
+      }
+    });
+  }, []);
+
   // Technology list for easy mapping
   const techStack = [
     { icon: <SiJavascript />, label: "JavaScript" },
@@ -100,12 +140,24 @@ const Technologies = () => {
       "
     >
       {/* Title */}
-      <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+      <motion.h1
+        className="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         Technologies
-      </h1>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+      </motion.h1>
+      <motion.p
+        className="text-sm text-gray-600 dark:text-gray-400 mt-1"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
         My Tech Stack
-      </p>
+      </motion.p>
 
       {/* Technology Icons */}
       <div
@@ -115,8 +167,9 @@ const Technologies = () => {
         "
       >
         {techStack.map((tech, i) => (
-          <div
+          <motion.div
             key={i}
+            ref={(el) => (cardsRef.current[i] = el)}
             className="
               w-24 h-24 sm:w-28 sm:h-28 
               bg-gray-100/60 dark:bg-gray-800/40 
@@ -128,14 +181,24 @@ const Technologies = () => {
               
               hover:shadow-[0_0_25px_rgba(0,255,255,0.45)]
               hover:border-cyan-400/60
-              hover:scale-110
               transition-all duration-300
             "
+            whileHover={{ scale: 1.15, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <span className="text-4xl drop-shadow-[0_0_6px_cyan]">
+            <motion.span
+              className="text-4xl drop-shadow-[0_0_6px_cyan]"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{
+                duration: 0.8,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: i * 0.1,
+              }}
+            >
               {tech.icon}
-            </span>
-          </div>
+            </motion.span>
+          </motion.div>
         ))}
       </div>
     </section>

@@ -1,9 +1,55 @@
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaGithub } from "react-icons/fa";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Projects = () => {
+  const projectsRef = useRef([]);
+  const imagesRef = useRef([]);
+
+  useEffect(() => {
+    // Animate project cards
+    projectsRef.current.forEach((project, index) => {
+      if (project) {
+        const isEven = index % 2 === 0;
+        gsap.set(project, { opacity: 0, x: isEven ? -100 : 100, y: 50 });
+        gsap.to(project, {
+          scrollTrigger: {
+            trigger: project,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+          opacity: 1,
+          x: 0,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+        });
+      }
+    });
+
+    // Animate images with parallax effect
+    imagesRef.current.forEach((image, index) => {
+      if (image) {
+        gsap.to(image, {
+          scrollTrigger: {
+            trigger: image,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+          y: -30,
+          ease: "none",
+        });
+      }
+    });
+  }, []);
+
   const projectList = [
     {
       title: "PlateShare – Community Food Sharing Platform",
@@ -65,17 +111,30 @@ const Projects = () => {
         font-display text-gray-800 dark:text-gray-200
       "
     >
-      <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white">
+      <motion.h1
+        className="text-4xl font-extrabold text-gray-900 dark:text-white"
+        initial={{ opacity: 0, y: -30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         Projects
-      </h1>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+      </motion.h1>
+      <motion.p
+        className="text-sm text-gray-600 dark:text-gray-400 mt-1"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
         My Recent Work
-      </p>
+      </motion.p>
 
       <div className="w-full max-w-6xl flex flex-col gap-14 mt-14">
         {projectList.map((project, i) => (
-          <div
+          <motion.div
             key={i}
+            ref={(el) => (projectsRef.current[i] = el)}
             className="
               w-full 
               bg-white/40 dark:bg-gray-800/40 
@@ -88,11 +147,13 @@ const Projects = () => {
               flex flex-col md:flex-row 
               gap-10 items-center
               transition-all duration-300
-              scroll-fade
             "
+            whileHover={{ scale: 1.02, y: -5 }}
+            transition={{ duration: 0.3 }}
           >
             {/* IMAGE */}
-            <img
+            <motion.img
+              ref={(el) => (imagesRef.current[i] = el)}
               src={project.image}
               alt={project.title}
               className="
@@ -102,22 +163,42 @@ const Projects = () => {
                 object-cover
               "
               loading="lazy"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             />
 
             {/* CONTENT */}
             <div className="md:w-[55%]">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <motion.h2
+                className="text-2xl font-bold text-gray-900 dark:text-white"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
                 {project.title}
-              </h2>
+              </motion.h2>
 
-              <p className="mt-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              <motion.p
+                className="mt-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
                 {project.description}
-              </p>
+              </motion.p>
 
               {/* TECHNOLOGY BADGES */}
-              <div className="flex flex-wrap gap-3 mt-5">
+              <motion.div
+                className="flex flex-wrap gap-3 mt-5"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
                 {project.tech.map((t, idx) => (
-                  <span
+                  <motion.span
                     key={idx}
                     className="
                       bg-gray-900 text-white dark:bg-gray-700 
@@ -125,16 +206,27 @@ const Projects = () => {
                       shadow-[0_0_12px_rgba(0,0,0,0.1)]
                       select-none
                     "
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: 0.5 + idx * 0.05 }}
+                    whileHover={{ scale: 1.1, y: -2 }}
                   >
                     {t}
-                  </span>
+                  </motion.span>
                 ))}
-              </div>
+              </motion.div>
 
               {/* BUTTONS */}
-              <div className="flex gap-4 mt-6 flex-wrap">
+              <motion.div
+                className="flex gap-4 mt-6 flex-wrap"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
                 {/* GitHub */}
-                <a
+                <motion.a
                   href={project.github}
                   className="
                     flex items-center gap-2
@@ -147,12 +239,14 @@ const Projects = () => {
                   "
                   target="_blank"
                   rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05, x: -3 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <FaGithub className="text-lg" /> GitHub
-                </a>
+                </motion.a>
 
                 {/* Live Demo */}
-                <a
+                <motion.a
                   href={project.live}
                   className="
                     flex items-center gap-2
@@ -165,29 +259,16 @@ const Projects = () => {
                   "
                   target="_blank"
                   rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05, x: 3 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <AiOutlineArrowRight className="text-lg" /> Live Demo
-                </a>
-              </div>
+                </motion.a>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
-
-      {/* Scroll Fade Animation */}
-      <style>{`
-        .scroll-fade {
-          opacity: 0;
-          transform: translateY(18px);
-          animation: fadeUp 1s ease forwards;
-        }
-        @keyframes fadeUp {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </section>
   );
 };
