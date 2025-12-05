@@ -20,6 +20,7 @@ import Navbar from "../../Components/NavBar/NavBar";
 import Home from "../../Components/Home/Home";
 import About from "../../Components/About/About";
 import ScrollToNextSection from "../../Components/ScrollToNextSection/ScrollToNextSection";
+import Technologies from "../../Components/Technologies/Technologies";
 // import ScrollToNextSection from "../../Components/ScrollToNextSection";
 
 const HomeLayout = () => {
@@ -31,6 +32,7 @@ const HomeLayout = () => {
       <About />
       <ScrollToNextSection targetSection="skills" /> {/* Scroll to the Skills section */}
       {/* Add more ScrollToNextSection components for other sections */}
+      <Technologies></Technologies>
     </div>
   );
 };
