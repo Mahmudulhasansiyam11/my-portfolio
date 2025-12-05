@@ -111,13 +111,14 @@ const Home = () => {
           </h2>
 
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
-            🚀 Transforming ideas into beautiful digital experiences
+            🚀 Motivated Frontend Developer building responsive, user-friendly
+            web applications
           </p>
 
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-8">
-            💼 Available for Freelance & Collaboration
+            💼 Seeking impactful projects & collaboration opportunities to grow
+            professionally
           </p>
-
           <a
             href="#"
             className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-full shadow-xl hover:opacity-90 transition-all"
