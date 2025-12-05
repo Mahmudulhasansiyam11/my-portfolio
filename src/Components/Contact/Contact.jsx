@@ -6,7 +6,7 @@ const Contact = () => {
     <section
       id="contact"
       className="
-        w-full py-20
+        w-full py-25
         bg-gradient-to-br from-[#f8fafc] via-[#eef2ff] to-[#e0f2fe]
         dark:from-gray-900 dark:via-gray-800 dark:to-gray-900
         px-6 sm:px-10 md:px-16
