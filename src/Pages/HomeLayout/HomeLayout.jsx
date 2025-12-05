@@ -23,6 +23,7 @@ import ScrollToNextSection from "../../Components/ScrollToNextSection/ScrollToNe
 import Technologies from "../../Components/Technologies/Technologies";
 import Skills from "../../Components/Skills/Skills";
 import Projects from "../../Components/Projects/Projects";
+import Contact from "../../Components/Contact/Contact";
 // import ScrollToNextSection from "../../Components/ScrollToNextSection";
 
 const HomeLayout = () => {
@@ -37,6 +38,7 @@ const HomeLayout = () => {
       <Technologies></Technologies>
       <Skills></Skills>
       <Projects></Projects>
+      <Contact></Contact>
     </div>
   );
 };
